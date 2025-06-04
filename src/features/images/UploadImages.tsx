@@ -4,6 +4,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { setPreview } from "./imagesSlice";
 import { UploadContainer } from "./UploadImages.styled";
 import uploadIcon from "../../assets/upload.svg";
+import reloadIcon from "../../assets/reload.svg";
 
 type UploadImagesProps = {
     onFilesChange: (files: (File | null)[]) => void;
@@ -33,7 +34,11 @@ export default function UploadImages({ onFilesChange }: UploadImagesProps) {
         <UploadContainer>
             {labels.map((label, idx) => (
                 <div className="field" key={idx}>
-                    <div className="custom-input">
+                    <div className={`custom-input ${photos[idx]?.previewUrl ? 'uploaded' : ''}`}
+                        style={photos[idx]?.previewUrl
+                            ? { backgroundImage: `url(${photos[idx].previewUrl})` }
+                            : undefined}
+                    >
                         <input
                             id={`upload-${idx}`}
                             type="file"
@@ -41,12 +46,9 @@ export default function UploadImages({ onFilesChange }: UploadImagesProps) {
                             onChange={(e) => handleChange(e, idx)}
                         />
                         <label className="custom-btn" htmlFor={`upload-${idx}`}>
-                            <img src={uploadIcon} alt="upload-icon" />
+                            <img src={photos[idx]?.previewUrl ? reloadIcon : uploadIcon} alt="" />
                         </label>
                     </div>
-                    {photos[idx]?.previewUrl && (
-                        <img src={photos[idx].previewUrl!} alt={`Превью ${label}`} />
-                    )}
                     <label>{label}</label>
                 </div>
             ))}

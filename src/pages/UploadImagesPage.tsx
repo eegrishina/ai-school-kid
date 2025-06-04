@@ -120,6 +120,7 @@ const UploadImagesPageStl = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+        margin-top: 64px;
 
         p {
             color: ${({ theme }) => theme.colors.muted};
