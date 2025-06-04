@@ -20,11 +20,17 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     outline: none;
     overflow: hidden;
+    margin: 0;
   }
 
   body {
     margin: 120px 0;
     padding: 0;
+    background-color: #E1F8E9
+  }
+
+  h2 {
+    font-size: 20px;
   }
 
   a {
