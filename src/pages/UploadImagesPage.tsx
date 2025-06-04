@@ -1,9 +1,43 @@
 import styled from 'styled-components';
 import Button from "../components/Button";
 import warningIcon from "../assets/warning.svg";
+import UploadImages from "../features/images/UploadImages";
+import { useAppDispatch } from "../hooks/useAppDispatch";
+import { useAppSelector } from "../hooks/useAppSelector";
+import { useNavigate } from "react-router-dom";
+import type { UploadedPhoto } from "../types";
+import { setTaskId } from "../features/images/imagesSlice";
 
 export default function UploadImagesPage() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const photos = useAppSelector((state) => state.photos.photos);
+
     const step = 1;
+
+    const allUploaded = photos.every((p: UploadedPhoto) => p.file !== null);
+
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        photos.forEach((photo: UploadedPhoto, idx: number) => {
+            if (photo.file) {
+                formData.append(`file${idx + 1}`, photo.file);
+            }
+        });
+
+        try {
+            const response = await fetch('https://sirius-draw-test-94500a1b4a2f.herokuapp.com/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+            dispatch(setTaskId(data.task_id));
+            navigate('/questions');
+        } catch (error) {
+            console.error('Upload images failed', error);
+        }
+    };
 
     return (
         <UploadImagesPageStl>
@@ -18,10 +52,15 @@ export default function UploadImagesPage() {
                     <img src={warningIcon} alt="icon" />
                     <p>Допустимые форматы файлов: jpg, jpeg, png, pdf. Размер не более 5 Мб</p>
                 </div>
-
+                <UploadImages />
                 <div className="bottom-part">
                     <p>Шаг 1/3</p>
-                    <Button text='Далее' link='/questions' />
+                    <Button
+                        text='Далее'
+                        link='/questions'
+                        disabled={!allUploaded}
+                        onClick={handleSubmit}
+                    />
                 </div>
             </div>
         </UploadImagesPageStl>
