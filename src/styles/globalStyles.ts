@@ -23,7 +23,12 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    margin: 0;
+    margin: 120px 0;
     padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 `;
