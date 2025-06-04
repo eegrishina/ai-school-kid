@@ -1,22 +1,31 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-type ButtonProps = {
+interface ButtonProps {
     text: string;
     link: string;
+    disabled?: boolean;
     isBack?: boolean;
-};
-
-export default function Button({ text, link, isBack = false }: ButtonProps) {
-    return (
-        <LinkStl to={link} isBack={isBack}>
-            {text}
-        </LinkStl>
-    )
+    onClick?: () => void | Promise<void>;
 }
 
-const LinkStl = styled(Link) <{ isBack: boolean }>`
-    display: inline-block;
+export default function Button({ text, link, disabled = false, isBack = false, onClick }: ButtonProps) {
+    const navigate = useNavigate();
+
+    const handleClick = async () => {
+        if (disabled) return;
+        if (onClick) await onClick();
+        navigate(link);
+    };
+
+    return (
+        <ButtonStl onClick={handleClick} disabled={disabled} isBack={isBack}>
+            {text}
+        </ButtonStl>
+    );
+}
+
+const ButtonStl = styled.button<{ isBack: boolean }>`
     background-color: ${({ theme, isBack }) =>
         isBack ? theme.colors.blue050 : theme.colors.blue100};
     color: ${({ theme, isBack }) =>
@@ -25,7 +34,6 @@ const LinkStl = styled(Link) <{ isBack: boolean }>`
     border: none;
     padding: 10px 24px;
     font-size: 16px;
-    text-align: center;
     transition: all 0.3s ease-in;
     cursor: pointer;
 
@@ -37,5 +45,6 @@ const LinkStl = styled(Link) <{ isBack: boolean }>`
     &:disabled {
         background-color: ${({ theme }) => theme.colors.disabledbtn};
         color: ${({ theme }) => theme.colors.disabled};
+        cursor: default;
     }
 `;
