@@ -3,25 +3,26 @@ import Button from "../components/Button";
 import warningIcon from "../assets/warning.svg";
 import UploadImages from "../features/images/UploadImages";
 import { useAppDispatch } from "../hooks/useAppDispatch";
-import { useAppSelector } from "../hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
-import type { UploadedPhoto } from "../types";
 import { setTaskId } from "../features/images/imagesSlice";
+import { useState } from "react";
 
 export default function UploadImagesPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const photos = useAppSelector((state) => state.photos.photos);
-
     const step = 1;
 
-    const allUploaded = photos.every((p: UploadedPhoto) => p.file !== null);
+    const [files, setFiles] = useState<(File | null)[]>([null, null, null]);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = async () => {
+        setError(null);
+        if (files.includes(null)) return;
+
         const formData = new FormData();
-        photos.forEach((photo: UploadedPhoto, idx: number) => {
-            if (photo.file) {
-                formData.append(`file${idx + 1}`, photo.file);
+        files.forEach((file) => {
+            if (file) {
+                formData.append('files', file);
             }
         });
 
@@ -31,11 +32,19 @@ export default function UploadImagesPage() {
                 body: formData,
             });
 
+            if (!response.ok) {
+                const errorData = await response.json();
+                const message = errorData?.detail?.[0]?.msg || 'Произошла ошибка при загрузке файлов.';
+                setError(message);
+                return;
+            }
+
             const data = await response.json();
             dispatch(setTaskId(data.task_id));
             navigate('/questions');
         } catch (error) {
             console.error('Upload images failed', error);
+            setError('Произошла ошибка при загрузке файлов.');
         }
     };
 
@@ -50,15 +59,20 @@ export default function UploadImagesPage() {
                 <h2>Загрузите фотографии рисунков</h2>
                 <div className="warning">
                     <img src={warningIcon} alt="icon" />
-                    <p>Допустимые форматы файлов: jpg, jpeg, png, pdf. Размер не более 5 Мб</p>
+                    <p>Допустимые форматы файлов: jpg, jpeg, png. Размер не более 5 Мб</p>
                 </div>
-                <UploadImages />
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
+                <UploadImages onFilesChange={setFiles} />
                 <div className="bottom-part">
                     <p>Шаг 1/3</p>
                     <Button
                         text='Далее'
                         link='/questions'
-                        disabled={!allUploaded}
+                        disabled={files.includes(null)}
                         onClick={handleSubmit}
                     />
                 </div>
