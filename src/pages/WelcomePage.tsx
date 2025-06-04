@@ -21,7 +21,7 @@ const WelcomePageStl = styled.div`
     margin: 0 auto;
     padding: 48px;
     text-align: center;
-    background-color: #E1F8E9;
+    background-color: ${({ theme }) => theme.colors.surface};
     border-radius: 40px;
 
     h1 {
