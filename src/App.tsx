@@ -1,8 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 function App() {
   return (
-    <div>
-      <h1>AI SchoolKid</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/upload" element={<UploadImagesPage />} />
+        <Route path="/questions" element={<QuestionsPage />} />
+        <Route path="/result" element={<ResultPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
