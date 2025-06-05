@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import WelcomePage from "./pages/WelcomePage";
 import UploadImagesPage from "./pages/UploadImagesPage";
+import QuestionsPage from "./pages/QuestionsPage";
 
 function App() {
   return (
@@ -8,8 +9,8 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/upload" element={<UploadImagesPage />} />
-        {/* <Route path="/questions" element={<QuestionsPage />} />
-        <Route path="/result" element={<ResultPage />} /> */}
+        <Route path="/questions" element={<QuestionsPage />} />
+        {/* <Route path="/result" element={<ResultPage />} /> */}
       </Routes>
     </BrowserRouter>
   )
