@@ -4,15 +4,29 @@ import type { ChildInfoDetails, ChildInfoKeys } from "../../types";
 import { ChildInfoFormStl } from "./ChildInfo.styled";
 import { updateChildInfo } from "./questionsSlice";
 import rawChildInfoFields from '../../data/childInfo.json';
+import { useState } from "react";
 
 const childInfoFields: ChildInfoDetails[] = rawChildInfoFields as ChildInfoDetails[]
 
 export default function ChildInfoForm() {
     const dispatch = useAppDispatch();
     const childInfo = useAppSelector((state) => state.questions.childInfo);
+    const [error, setError] = useState<string | null>(null);
 
     const handleChange = (key: ChildInfoKeys, value: string) => {
-        dispatch(updateChildInfo({ key, value }))
+        dispatch(updateChildInfo({ key, value }));
+    };
+
+    const hadleBlur = (key: ChildInfoKeys, value: string) => {
+        if (key === 'childDOB') {
+            const year = parseInt(value.split('-')[0], 10);
+            const currentYear = new Date().getFullYear();
+
+            if (year < 1900 || year > currentYear) {
+                setError('Введите корректный год рождения');
+                return;
+            }
+        }
     };
 
     return (
@@ -47,8 +61,14 @@ export default function ChildInfoForm() {
                                 type={type}
                                 value={childInfo[key] || ''}
                                 onChange={e => handleChange(key, e.target.value)}
+                                onBlur={e => hadleBlur(key, e.target.value)}
                                 required
                             />
+                        )}
+                        {type === 'date' && error && (
+                            <div className="error">
+                                {error}
+                            </div>
                         )}
                     </div>
                 ))}

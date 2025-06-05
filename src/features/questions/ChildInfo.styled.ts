@@ -6,8 +6,11 @@ export const ChildInfoFormStl = styled.div`
         flex-direction: column;
         gap: 16px;
 
-        .required {
+        .required, .error {
             color: ${({ theme }) => theme.colors.red};
+        }
+        .error {
+            font-size: 12px;
         }
 
         > div {
