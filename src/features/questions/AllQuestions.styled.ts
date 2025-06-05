@@ -21,6 +21,11 @@ export const AllQuestionsStl = styled.div`
 
                 > label {
                     font-size: 12px;
+                    cursor: pointer;
+                    
+                    > input {
+                        cursor: pointer;
+                    }
                 }
             }
             

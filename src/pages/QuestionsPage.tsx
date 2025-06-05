@@ -7,20 +7,21 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AllQuestions from "../features/questions/AllQuestions";
+import EmotionalStateSelector from "../features/questions/EmotionalState";
 
 export default function QuestionsPage() {
     const navigate = useNavigate();
     const childDetails = useAppSelector((state) => state.questions.childInfo);
     const isChildInfoValid = useAppSelector((state) => state.questions.isChildInfoValid);
+    const isAnswersCompleted = useAppSelector((state) => state.questions.isAnswersCompleted);
     const answers = useAppSelector(state => state.questions.answers);
     const taskId = useAppSelector((state) => state.photos.taskId);
+    const emoji = useAppSelector((state) => state.questions.emotionalState);
     const [error, setError] = useState<string | null>(null);
     const step = 2;
 
-    const emotionalStateValue = 'Спокойное';
-
     const handleSubmit = async () => {
-        if (!isChildInfoValid) return;
+        if (!isChildInfoValid && !isAnswersCompleted) return;
 
         try {
             const response = await fetch('https://sirius-draw-test-94500a1b4a2f.herokuapp.com/submit-survey', {
@@ -33,7 +34,7 @@ export default function QuestionsPage() {
                     survey: {
                         ...childDetails,
                         ...answers,
-                        emotionalState: emotionalStateValue,
+                        emotionalState: emoji,
                     }
                 })
             });
@@ -72,7 +73,7 @@ export default function QuestionsPage() {
                     </div>
                 </div>
                 <AllQuestions />
-
+                <EmotionalStateSelector />
                 {error && (
                     <div className="error-message">
                         {error}
@@ -86,7 +87,7 @@ export default function QuestionsPage() {
                             text='Узнать результаты'
                             link='/result'
                             onClick={handleSubmit}
-                            disabled={!isChildInfoValid}
+                            disabled={!(isChildInfoValid && isAnswersCompleted)}
                         />
                     </div>
                 </div>
