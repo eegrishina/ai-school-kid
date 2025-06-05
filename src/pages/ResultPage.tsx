@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from "react";
 import { useAppSelector } from "../hooks/useAppSelector";
 import type { ReportStatusResponse } from "../types";
+import Spinner from "../components/Spinner";
 
 export default function ResultPage() {
     const [status, setStatus] = useState<'в обработке' | 'готово' | 'ошибка' | 'отправка'>('отправка');
@@ -59,9 +60,19 @@ export default function ResultPage() {
                 <h2>Психологический отчет о ребенке</h2>
 
                 <div>
-                    {status === 'отправка' && <p>Отправка данных формы...</p>}
-                    {status === 'в обработке' && <p>Анализ в процессе...</p>}
-                    {status === 'готово' && pdfUrl && <p>Отчет готов!</p>}
+                    {status === 'отправка' && (
+                        <div className="loading">
+                            Отправка данных формы...
+                            <Spinner />
+                        </div>
+                    )}
+                    {status === 'в обработке' && (
+                        <div className="loading">
+                            Анализ в процессе...
+                            <Spinner />
+                        </div>
+                    )}
+                    {status === 'готово' && pdfUrl && <p className="done">Отчет готов!</p>}
 
                     {status === 'ошибка' && (
                         <p className="error">
@@ -119,6 +130,15 @@ const ResultPageStl = styled.div`
         flex-direction: column;
         gap: 64px;
         padding: 48px 64px 0;
+        
+        .loading {
+            display: flex;
+            align-items: baseline;
+            color: ${({ theme }) => theme.colors.violet};
+        }
+        .done {
+            color: ${({ theme }) => theme.colors.blue100};
+        }
         .error {
             color: ${({ theme }) => theme.colors.red};
         }

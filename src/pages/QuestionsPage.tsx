@@ -109,6 +109,12 @@ const QuestionsPageStl = styled.div`
             height: 16px;
             width: 100%;
             background-color: ${({ theme }) => theme.colors.blue050};
+            &:first-child {
+                border-top-left-radius: 20px;
+            }
+            &:last-child {
+                border-top-right-radius: 20px;
+            }
         }
         div.filled {
             height: 16px;
