@@ -22,13 +22,13 @@ export default function ChildInfoForm() {
                 {childInfoFields.map(({ label, type, key, options }: ChildInfoDetails) => (
                     <div key={key}>
                         <label>
-                            {label} <span className="required">*</span>
+                            {label}<span className="required">*</span>
                         </label>
 
                         {type === 'radio' && options ? (
                             <div className="radio-group">
                                 {options.map(option => (
-                                    <label key={option}>
+                                    <label key={option} className="custom-radio">
                                         <input
                                             type="radio"
                                             name={key}
@@ -37,6 +37,7 @@ export default function ChildInfoForm() {
                                             onChange={e => handleChange(key, e.target.value)}
                                             required
                                         />
+                                        <span className="radio-mark" />
                                         {option}
                                     </label>
                                 ))}

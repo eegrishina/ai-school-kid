@@ -31,4 +31,33 @@ export const EmotionalStateSelectorStl = styled.div`
             }
         }
     }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        .emoji-options {
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            font-size: 14px;
+
+            > div {
+                flex-direction: row;
+                align-items: center;
+                gap: 8px;
+            }
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        .emoji-options {
+            button {
+                height: 40px;
+                width: 40px;
+    
+                span {
+                    font-size: 1.5rem;
+                    line-height: 1.9;
+                }
+            }
+        }
+    }
 `;

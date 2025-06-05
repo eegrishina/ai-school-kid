@@ -145,12 +145,37 @@ const QuestionsPageStl = styled.div`
     @media ${({ theme }) => theme.device.tablet} {
         .content {
             padding: 0 24px;
+            gap: 48px;
+        }
+
+        .bottom-part {
+            margin-top: 0;
         }
     }
 
     @media ${({ theme }) => theme.device.mobile} {
         .content {
             padding: 0 16px;
+            gap: 32px;
+
+            .warning {
+                padding: 16px;
+                > div {
+                    flex-direction: column;
+                    gap: 8px;
+                }
+            }
+        }
+
+        .bottom-part {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            gap: 24px;
+
+            > div {
+                flex-direction: column-reverse;
+                width: 100%;
+            }
         }
     }
 `;

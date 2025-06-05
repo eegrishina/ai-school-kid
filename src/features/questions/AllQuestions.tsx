@@ -21,17 +21,15 @@ export default function AllQuestions() {
                 <div key={id}>
                     <h2>Раздел {id}. {section}</h2>
                     <div className="questions-block">
-
                         {questions.map((q) => (
                             <div key={q.id} className="questions-blockooo">
                                 <label>
-                                    {q.text}: <span className="required">*</span>
+                                    {q.text}:<span className="required">*</span>
                                 </label>
-
                                 {q.type === 'radio' && q.options ? (
                                     <div className="radio-group">
                                         {q.options.map(option => (
-                                            <label key={option}>
+                                            <label key={option} className="custom-radio">
                                                 <input
                                                     type="radio"
                                                     name={q.id}
@@ -40,6 +38,7 @@ export default function AllQuestions() {
                                                     onChange={e => handleChange(q.id, e.target.value)}
                                                     required
                                                 />
+                                                <span className="radio-mark" />
                                                 {option}
                                             </label>
                                         ))}

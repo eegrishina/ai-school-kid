@@ -16,7 +16,7 @@ export const ChildInfoFormStl = styled.div`
             gap: 4px;
 
             > input {
-                border: 2px solid ${({ theme }) => theme.colors.muted};
+                border: 1px solid ${({ theme }) => theme.colors.muted};
                 border-radius: 6px;
                 height: 40px;
                 width: 100%;
@@ -36,10 +36,50 @@ export const ChildInfoFormStl = styled.div`
             display: flex;
             gap: 24px;
 
+            .custom-radio {
+                position: relative;
+                padding-left: 20px;
+                font-size: 14px;
+                cursor: pointer;
+
+                input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+
+                .radio-mark {
+                    position: absolute;
+                    left: 0;
+                    top: 42%;
+                    transform: translateY(-50%);
+                    height: 16px;
+                    width: 16px;
+                    border: 5px solid ${({ theme }) => theme.colors.muted};
+                    border-radius: 50%;
+                    background-color: ${({ theme }) => theme.colors.muted};
+                    &:hover {
+                        border-color: ${({ theme }) => theme.colors.blue100};
+                        background-color: ${({ theme }) => theme.colors.blue100};
+                    }
+                }
+
+                input:checked + .radio-mark {
+                    border-color: ${({ theme }) => theme.colors.blue100};
+                    background-color: ${({ theme }) => theme.colors.surface};
+                }
+
+                input:checked:hover + .radio-mark {
+                    border-color: ${({ theme }) => theme.colors.blue110};
+                    background-color: ${({ theme }) => theme.colors.surface};
+                }
+            }
+
             > input {
                 height: 18px;
                 width: 18px;
             }
+
             > label {
                 height: 18px;
             }
