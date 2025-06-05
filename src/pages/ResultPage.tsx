@@ -3,16 +3,24 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "../hooks/useAppSelector";
 import type { ReportStatusResponse } from "../types";
 import Spinner from "../components/Spinner";
+import { useNavigate } from "react-router-dom";
+import Wrapper from "../components/Wrapper";
+import Progress from "../components/Progress";
 
 export default function ResultPage() {
+    const navigate = useNavigate();
     const [status, setStatus] = useState<'в обработке' | 'готово' | 'ошибка' | 'отправка'>('отправка');
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const taskId = useAppSelector((state) => state.photos.taskId);
+    console.log(taskId);
     const step = 3;
 
     useEffect(() => {
-        if (!taskId) return;
+        if (!taskId) {
+            navigate('/');
+            return;
+        }
 
         setStatus('в обработке');
         setError(null);
@@ -50,86 +58,59 @@ export default function ResultPage() {
     }, [taskId]);
 
     return (
-        <ResultPageStl>
-            <div className="progress">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className={step >= i ? 'filled' : ''}></div>
-                ))}
-            </div>
-            <div className="content">
-                <h2>Психологический отчет о ребенке</h2>
+        <Wrapper>
+            <ResultPageStl>
+                <Progress step={step} />
+                <div className="content">
+                    <h2>Психологический отчет о ребенке</h2>
 
-                <div>
-                    {status === 'отправка' && (
-                        <div className="loading">
-                            Отправка данных формы...
-                            <Spinner />
-                        </div>
-                    )}
-                    {status === 'в обработке' && (
-                        <div className="loading">
-                            Анализ в процессе...
-                            <Spinner />
-                        </div>
-                    )}
-                    {status === 'готово' && pdfUrl && <p className="done">Отчет готов!</p>}
+                    <div>
+                        {status === 'отправка' && (
+                            <div className="loading">
+                                Отправка данных формы...
+                                <Spinner />
+                            </div>
+                        )}
+                        {status === 'в обработке' && (
+                            <div className="loading">
+                                Анализ в процессе...
+                                <Spinner />
+                            </div>
+                        )}
+                        {status === 'готово' && pdfUrl && <p className="done">Отчет готов!</p>}
 
-                    {status === 'ошибка' && (
-                        <p className="error">
-                            Ошибка: {error || 'Не удалось получить статус отчета.'}
-                        </p>
-                    )}
+                        {status === 'ошибка' && (
+                            <p className="error">
+                                Ошибка: {error || 'Не удалось получить статус отчета.'}
+                            </p>
+                        )}
+                    </div>
+
+                    <div className="bottom-part">
+                        <p>Шаг {step}/3</p>
+                        {status === 'готово' && pdfUrl && (
+                            <div className="btns">
+                                <a href={pdfUrl || ''} target="_blank" rel="noopener noreferrer">
+                                    Просмотреть отчет
+                                </a>
+                                <a href={pdfUrl || ''} download>
+                                    Скачать отчет PDF
+                                </a>
+                            </div>
+                        )}
+                    </div>
                 </div>
-
-                <div className="bottom-part">
-                    <p>Шаг 3/3</p>
-                    {status === 'готово' && pdfUrl && (
-                        <div className="btns">
-                            <a href={pdfUrl || ''} target="_blank" rel="noopener noreferrer">
-                                Просмотреть отчет
-                            </a>
-                            <a href={pdfUrl || ''} download>
-                                Скачать отчет PDF
-                            </a>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </ResultPageStl>
+            </ResultPageStl>
+        </Wrapper>
     )
 }
 
 const ResultPageStl = styled.div`
-    max-width: 904px;
-    margin: 0 auto;
-    padding-bottom: 32px;
-    background-color: #fff;
-    border-radius: 20px;
-
-    .progress {
-        display: flex;
-        div {
-            height: 16px;
-            width: 100%;
-            background-color: ${({ theme }) => theme.colors.blue050};
-            &:first-child {
-                border-top-left-radius: 20px;
-            }
-            &:last-child {
-                border-top-right-radius: 20px;
-            }
-        }
-        div.filled {
-            height: 16px;
-            background-color: ${({ theme }) => theme.colors.blue070};
-        }
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         gap: 64px;
-        padding: 48px 64px 0;
+        padding: 0 64px;
         
         .loading {
             display: flex;
@@ -172,6 +153,18 @@ const ResultPageStl = styled.div`
             &:hover {
                 background-color: ${({ theme }) => theme.colors.blue110};
             }
+        }
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        .content {
+            padding: 0 24px;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        .content {
+            padding: 0 16px;
         }
     }
 `;

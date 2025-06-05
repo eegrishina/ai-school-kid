@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AllQuestions from "../features/questions/AllQuestions";
 import EmotionalStateSelector from "../features/questions/EmotionalState";
+import Wrapper from "../components/Wrapper";
+import Progress from "../components/Progress";
 
 export default function QuestionsPage() {
     const navigate = useNavigate();
@@ -54,79 +56,52 @@ export default function QuestionsPage() {
     };
 
     return (
-        <QuestionsPageStl>
-            <div className="progress">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className={step >= i ? 'filled' : ''}></div>
-                ))}
-            </div>
-            <div className="content">
-                <ChildInfoForm />
-                <div className="warning">
-                    <div>
-                        <img src={handIcon} alt="hand" />
-                        <p>Пожалуйста, внимательно прочитайте каждый вопрос и выберите наиболее подходящий вариант ответа, отражающий поведение и эмоциональное состояние вашего ребенка в течение последних 2-4 недель. Отвечайте максимально честно и искренне, так как от этого зависит точность оценки психоэмоционального развития Вашего ребенка.</p>
+        <Wrapper>
+            <QuestionsPageStl>
+                <Progress step={step} />
+                <div className="content">
+                    <ChildInfoForm />
+                    <div className="warning">
+                        <div>
+                            <img src={handIcon} alt="hand" />
+                            <p>Пожалуйста, внимательно прочитайте каждый вопрос и выберите наиболее подходящий вариант ответа, отражающий поведение и эмоциональное состояние вашего ребенка в течение последних 2-4 недель. Отвечайте максимально честно и искренне, так как от этого зависит точность оценки психоэмоционального развития Вашего ребенка.</p>
+                        </div>
+                        <div>
+                            <img src={flagIcon} alt="flag" />
+                            <p>Все вопросы обязательны к заполнению.</p>
+                        </div>
                     </div>
-                    <div>
-                        <img src={flagIcon} alt="flag" />
-                        <p>Все вопросы обязательны к заполнению.</p>
-                    </div>
-                </div>
-                <AllQuestions />
-                <EmotionalStateSelector />
-                {error && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
-                <div className="bottom-part">
-                    <p>Шаг 2/3</p>
-                    <div>
-                        <Button text='К загрузке рисунков' link='/upload' isBack />
-                        <Button
-                            text='Узнать результаты'
-                            link='/result'
-                            onClick={handleSubmit}
-                            disabled={!(isChildInfoValid && isAnswersCompleted)}
-                        />
+                    <AllQuestions />
+                    <EmotionalStateSelector />
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+                    <div className="bottom-part">
+                        <p>Шаг {step}/3</p>
+                        <div>
+                            <Button text='К загрузке рисунков' link='/upload' isBack />
+                            <Button
+                                text='Узнать результаты'
+                                link='/result'
+                                onClick={handleSubmit}
+                                disabled={!(isChildInfoValid && isAnswersCompleted)}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </QuestionsPageStl>
+            </QuestionsPageStl>
+        </Wrapper>
     )
 }
 
 const QuestionsPageStl = styled.div`
-    max-width: 904px;
-    margin: 0 auto;
-    padding-bottom: 32px;
-    background-color: #fff;
-    border-radius: 20px;
-
-    .progress {
-        display: flex;
-        div {
-            height: 16px;
-            width: 100%;
-            background-color: ${({ theme }) => theme.colors.blue050};
-            &:first-child {
-                border-top-left-radius: 20px;
-            }
-            &:last-child {
-                border-top-right-radius: 20px;
-            }
-        }
-        div.filled {
-            height: 16px;
-            background-color: ${({ theme }) => theme.colors.blue070};
-        }
-    }
-
     .content {
         display: flex;
         flex-direction: column;
         gap: 64px;
-        padding: 48px 64px 0;
+        padding: 0 64px;
 
         .warning {
             display: flex;
@@ -164,6 +139,18 @@ const QuestionsPageStl = styled.div`
         > div {
             display: flex;
             gap: 8px;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        .content {
+            padding: 0 24px;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        .content {
+            padding: 0 16px;
         }
     }
 `;

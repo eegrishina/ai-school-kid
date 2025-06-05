@@ -1,28 +1,27 @@
 import styled from 'styled-components';
 import Button from "../components/Button";
+import Wrapper from "../components/Wrapper";
 
 export default function WelcomePage() {
     return (
-        <WelcomePageStl>
-            <h1>ИИ-психодиагностика</h1>
-            <p>
-                Добро пожаловать!
-                Вы находитесь на странице исследования психоэмоционального состояния детей.
-                С помощью современных ИИ-технологий мы анализируем результаты психодиагностики, чтобы помочь лучше понять внутренний мир ребёнка.
-            </p>
-            <p>Готовы начать?</p>
-            <Button text='Начать тест' link='/upload' />
-        </WelcomePageStl>
+        <Wrapper>
+            <WelcomePageStl>
+                <h1>ИИ-психодиагностика</h1>
+                <p>
+                    Добро пожаловать!
+                    Вы находитесь на странице исследования психоэмоционального состояния детей.
+                    С помощью современных ИИ-технологий мы анализируем результаты психодиагностики, чтобы помочь лучше понять внутренний мир ребёнка.
+                </p>
+                <p>Готовы начать?</p>
+                <Button text='Начать тест' link='/upload' />
+            </WelcomePageStl>
+        </Wrapper>
     )
 }
 
 const WelcomePageStl = styled.div`
-    max-width: 904px;
-    margin: 0 auto;
-    padding: 48px;
+    padding: 64px 64px 32px;
     text-align: center;
-    background-color: ${({ theme }) => theme.colors.surface};
-    border-radius: 40px;
 
     h1 {
         font-size: 3rem;
@@ -36,7 +35,23 @@ const WelcomePageStl = styled.div`
         margin-bottom: 30px;
     }
 
-    a {
-        font-size: 24px;
+    @media ${({ theme }) => theme.device.tablet} {
+        padding: 24px 24px 0px;
+        h1 {
+            font-size: 28px;
+        }
+        p {
+            font-size: 16px;
+        }
+    }
+    
+    @media ${({ theme }) => theme.device.mobile} {
+        padding: 24px 16px 0px;
+        h1 {
+            font-size: 22px;
+        }
+        p {
+            font-size: 14px;
+        }
     }
 `;

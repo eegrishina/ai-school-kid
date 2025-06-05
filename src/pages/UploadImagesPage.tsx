@@ -6,6 +6,8 @@ import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useNavigate } from "react-router-dom";
 import { setTaskId } from "../features/images/imagesSlice";
 import { useState } from "react";
+import Wrapper from "../components/Wrapper";
+import Progress from "../components/Progress";
 
 export default function UploadImagesPage() {
     const dispatch = useAppDispatch();
@@ -49,66 +51,43 @@ export default function UploadImagesPage() {
     };
 
     return (
-        <UploadImagesPageStl>
-            <div className="progress">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className={step >= i ? 'filled' : ''}></div>
-                ))}
-            </div>
-            <div className="content">
-                <h2>Загрузите фотографии рисунков</h2>
-                <div className="warning">
-                    <img src={warningIcon} alt="icon" />
-                    <p>Допустимые форматы файлов: jpg, jpeg, png. Размер не более 5 Мб</p>
-                </div>
-                {error && (
-                    <div className="error-message">
-                        {error}
+        <Wrapper>
+            <UploadImagesPageStl>
+                <Progress step={step} />
+                <div className="content">
+                    <h2>Загрузите фотографии рисунков</h2>
+                    <div className="warning">
+                        <img src={warningIcon} alt="icon" />
+                        <p>Допустимые форматы файлов: jpg, jpeg, png. Размер не более 5 Мб</p>
                     </div>
-                )}
-                <UploadImages onFilesChange={setFiles} />
-                <div className="bottom-part">
-                    <p>Шаг 1/3</p>
-                    <Button
-                        text='Далее'
-                        link='/questions'
-                        disabled={files.includes(null)}
-                        onClick={handleSubmit}
-                    />
+                    {error && (
+                        <div className="error-message">
+                            {error}
+                        </div>
+                    )}
+                    <UploadImages onFilesChange={setFiles} />
+                    <div className="bottom-part">
+                        <p>Шаг {step}/3</p>
+                        <Button
+                            text='Далее'
+                            link='/questions'
+                            disabled={files.includes(null)}
+                            onClick={handleSubmit}
+                        />
+                    </div>
                 </div>
-            </div>
-        </UploadImagesPageStl>
+            </UploadImagesPageStl>
+        </Wrapper>
     )
 }
 
 const UploadImagesPageStl = styled.div`
-    max-width: 904px;
-    margin: 0 auto;
-    padding-bottom: 32px;
-    background-color: #fff;
-    border-radius: 20px;
-
-    .progress {
-        display: flex;
-        div {
-            height: 16px;
-            width: 100%;
-            background-color: ${({ theme }) => theme.colors.blue050};
-            &:first-child {
-                border-top-left-radius: 20px;
-            }
-            &:last-child {
-                border-top-right-radius: 20px;
-            }
-        }
-        div.filled {
-            height: 16px;
-            background-color: ${({ theme }) => theme.colors.blue070};
-        }
-    }
-
     .content {
-        padding: 48px 64px 0;
+        padding: 0 64px;
+        
+        h2 {
+            margin-bottom: 0;
+        }
     }
 
     .warning {
@@ -130,6 +109,18 @@ const UploadImagesPageStl = styled.div`
 
         p {
             color: ${({ theme }) => theme.colors.muted};
+        }
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        .content {
+            padding: 0 24px;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        .content {
+            padding: 0 16px;
         }
     }
 `;
