@@ -10,6 +10,8 @@ const initialState: ChildInfoFormState = {
         parentName: '',
     },
     isChildInfoValid: false,
+    answers: {},
+    isAnswersCompleted: false,
 }
 
 const validateChildInfo = (childInfo: ChildInfoFormState['childInfo']) => {
@@ -26,9 +28,16 @@ export const questionsSlice = createSlice({
         ) => {
             state.childInfo[action.payload.key] = action.payload.value;
             state.isChildInfoValid = validateChildInfo(state.childInfo);
+        },
+        updateAnswer: (
+            state,
+            action: PayloadAction<{ id: string; answer: string }>
+        ) => {
+            state.answers[action.payload.id] = action.payload.answer;
+            state.isAnswersCompleted = Object.keys(state.answers).length === 40;
         }
     },
 })
 
-export const { updateChildInfo } = questionsSlice.actions;
+export const { updateChildInfo, updateAnswer } = questionsSlice.actions;
 export default questionsSlice.reducer;
