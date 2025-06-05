@@ -2,9 +2,55 @@ import styled from 'styled-components';
 import Button from "../components/Button";
 import handIcon from "../assets/hand.svg";
 import flagIcon from "../assets/flag.svg";
+import ChildInfoForm from "../features/questions/ChildInfo";
+import { useAppSelector } from "../hooks/useAppSelector";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AllQuestions from "../features/questions/AllQuestions";
 
 export default function QuestionsPage() {
+    const navigate = useNavigate();
+    const childDetails = useAppSelector((state) => state.questions.childInfo);
+    const isChildInfoValid = useAppSelector((state) => state.questions.isChildInfoValid);
+    const answers = useAppSelector(state => state.questions.answers);
+    const taskId = useAppSelector((state) => state.photos.taskId);
+    const [error, setError] = useState<string | null>(null);
     const step = 2;
+
+    const emotionalStateValue = 'Спокойное';
+
+    const handleSubmit = async () => {
+        if (!isChildInfoValid) return;
+
+        try {
+            const response = await fetch('https://sirius-draw-test-94500a1b4a2f.herokuapp.com/submit-survey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    task_id: taskId,
+                    survey: {
+                        ...childDetails,
+                        ...answers,
+                        emotionalState: emotionalStateValue,
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                const message = errorData?.detail?.[0]?.msg || 'Произошла ошибка при отправке формы.';
+                setError(message);
+                return;
+            }
+
+            navigate('/result');
+        } catch (error) {
+            console.error('Upload images failed', error);
+            setError('Произошла ошибка при отправке формы.');
+        }
+    };
 
     return (
         <QuestionsPageStl>
@@ -14,7 +60,7 @@ export default function QuestionsPage() {
                 ))}
             </div>
             <div className="content">
-                {/* <Section0 /> */}
+                <ChildInfoForm />
                 <div className="warning">
                     <div>
                         <img src={handIcon} alt="hand" />
@@ -25,13 +71,23 @@ export default function QuestionsPage() {
                         <p>Все вопросы обязательны к заполнению.</p>
                     </div>
                 </div>
-                {/* <Sections /> */}
+                <AllQuestions />
 
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
                 <div className="bottom-part">
                     <p>Шаг 2/3</p>
                     <div>
                         <Button text='К загрузке рисунков' link='/upload' isBack />
-                        <Button text='Узнать результаты' link='/result' />
+                        <Button
+                            text='Узнать результаты'
+                            link='/result'
+                            onClick={handleSubmit}
+                            disabled={!isChildInfoValid}
+                        />
                     </div>
                 </div>
             </div>
