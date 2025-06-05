@@ -52,3 +52,8 @@ export type EmotionalState =
     | 'Спокойное'
     | 'Радостное'
     | 'Воодушевленное';
+
+export interface ReportStatusResponse {
+    status: 'в обработке' | 'готово' | 'ошибка';
+    pdf_url?: string;
+}
