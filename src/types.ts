@@ -20,6 +20,7 @@ export interface ChildInfoFormState {
     isChildInfoValid: boolean;
     answers: Record<string, string>;
     isAnswersCompleted: boolean;
+    emotionalState: EmotionalState | null;
 }
 
 export type ChildInfoKeys = 'childName' | 'childDOB' | 'childGender' | 'parentName';
@@ -44,3 +45,10 @@ export interface QuestionsDetails {
     section: string;
     questions: Questions[];
 }
+
+export type EmotionalState =
+    | 'Грустное'
+    | 'Взволнованное'
+    | 'Спокойное'
+    | 'Радостное'
+    | 'Воодушевленное';
