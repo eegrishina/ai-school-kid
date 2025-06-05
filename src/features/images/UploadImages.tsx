@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { setPreview } from "./imagesSlice";
-import { UploadContainer } from "./UploadImages.styled";
+import { UploadImagesStl } from "./UploadImages.styled";
 import uploadIcon from "../../assets/upload.svg";
 import reloadIcon from "../../assets/reload.svg";
 
@@ -31,7 +31,7 @@ export default function UploadImages({ onFilesChange }: UploadImagesProps) {
     };
 
     return (
-        <UploadContainer>
+        <UploadImagesStl>
             {labels.map((label, idx) => (
                 <div className="field" key={idx}>
                     <div className={`custom-input ${photos[idx]?.previewUrl ? 'uploaded' : ''}`}
@@ -52,6 +52,6 @@ export default function UploadImages({ onFilesChange }: UploadImagesProps) {
                     <label>{label}</label>
                 </div>
             ))}
-        </UploadContainer>
+        </UploadImagesStl>
     );
 }

@@ -84,7 +84,7 @@ export default function UploadImagesPage() {
 const UploadImagesPageStl = styled.div`
     .content {
         padding: 0 64px;
-        
+
         h2 {
             margin-bottom: 0;
         }
@@ -116,11 +116,23 @@ const UploadImagesPageStl = styled.div`
         .content {
             padding: 0 24px;
         }
+
+        .bottom-part {
+            margin-top: 48px;
+        }
     }
 
     @media ${({ theme }) => theme.device.mobile} {
         .content {
             padding: 0 16px;
+        }
+
+        .warning {
+            margin-bottom: 24px;
+        }
+
+        .bottom-part {
+            margin-top: 32px;
         }
     }
 `;
