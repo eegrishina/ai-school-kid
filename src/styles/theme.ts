@@ -17,8 +17,8 @@ export const theme = {
         violet: '#6447CF',
     },
     device: {
-        mobile: `(max-width: 380px)`,
-        tablet: `(max-width: 640px)`,
+        mobile: `(max-width: 460px)`,
+        tablet: `(max-width: 680px)`,
         dasktop: `(max-width: 1200px)`,
     },
 };

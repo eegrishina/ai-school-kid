@@ -81,9 +81,9 @@ export default function QuestionsPage() {
                     <div className="bottom-part">
                         <p>Шаг {step}/3</p>
                         <div>
-                            <Button text='К загрузке рисунков' link='/upload' isBack />
+                            <Button text='< К загрузке рисунков' link='/upload' isBack />
                             <Button
-                                text='Узнать результаты'
+                                text='Узнать результаты >>'
                                 link='/result'
                                 onClick={handleSubmit}
                                 disabled={!(isChildInfoValid && isAnswersCompleted)}

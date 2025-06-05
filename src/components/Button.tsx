@@ -47,4 +47,8 @@ const ButtonStl = styled.button<{ isBack: boolean }>`
         color: ${({ theme }) => theme.colors.disabled};
         cursor: default;
     }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        font-size: 14px;
+    }
 `;

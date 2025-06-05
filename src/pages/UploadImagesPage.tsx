@@ -69,7 +69,7 @@ export default function UploadImagesPage() {
                     <div className="bottom-part">
                         <p>Шаг {step}/3</p>
                         <Button
-                            text='Далее'
+                            text='Далее >>'
                             link='/questions'
                             disabled={files.includes(null)}
                             onClick={handleSubmit}

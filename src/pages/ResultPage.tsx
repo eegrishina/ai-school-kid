@@ -13,7 +13,6 @@ export default function ResultPage() {
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const taskId = useAppSelector((state) => state.photos.taskId);
-    console.log(taskId);
     const step = 3;
 
     useEffect(() => {
@@ -109,7 +108,6 @@ const ResultPageStl = styled.div`
     .content {
         display: flex;
         flex-direction: column;
-        gap: 64px;
         padding: 0 64px;
         
         .loading {
@@ -147,6 +145,7 @@ const ResultPageStl = styled.div`
             border: none;
             padding: 10px 24px;
             font-size: 16px;
+            text-align: center;
             transition: all 0.3s ease-in;
             cursor: pointer;
 
@@ -160,11 +159,26 @@ const ResultPageStl = styled.div`
         .content {
             padding: 0 24px;
         }
+
+        .bottom-part {
+            margin-top: 48px;
+        }
     }
 
     @media ${({ theme }) => theme.device.mobile} {
         .content {
             padding: 0 16px;
+        }
+
+        .bottom-part {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            gap: 24px;
+
+            > div {
+                flex-direction: column-reverse;
+                width: 100%;
+            }
         }
     }
 `;
