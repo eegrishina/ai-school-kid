@@ -59,14 +59,18 @@ export const AllQuestionsStl = styled.div`
                 }
             }
 
-            > input {
+            > textarea {
                 border: 1px solid ${({ theme }) => theme.colors.muted};
                 border-radius: 6px;
-                height: 40px;
-                width: 100%;
                 padding: 10px 12px;
+                font-size: 14px;
+                resize: none;
+                overflow: hidden;
+                min-height: 40px;
 
-                &:hover, &:active, &:focus, &:valid {
+                &:hover,
+                &:active,
+                &:focus {
                     border-color: ${({ theme }) => theme.colors.violet};
                 }
             }

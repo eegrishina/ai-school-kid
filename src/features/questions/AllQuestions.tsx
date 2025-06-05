@@ -44,10 +44,15 @@ export default function AllQuestions() {
                                         ))}
                                     </div>
                                 ) : (
-                                    <input
-                                        type={q.type}
-                                            value={answers[q.id] || ''}
-                                        onChange={e => handleChange(q.id, e.target.value)}
+                                    <textarea
+                                        value={answers[q.id] || ''}
+                                        onInput={(e) => {
+                                            const target = e.target as HTMLTextAreaElement;
+                                            target.style.height = 'auto';
+                                            target.style.height = `${target.scrollHeight}px`;
+                                            const fixText = target.value.replace(/<[^>]*>?/gm, '');
+                                            handleChange(q.id, fixText);
+                                        }}
                                         required
                                     />
                                 )}
