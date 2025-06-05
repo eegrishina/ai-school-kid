@@ -1,20 +1,29 @@
 import styled from "styled-components";
 
-export const ChildInfoFormStl = styled.div`
-    .form-block {
+export const AllQuestionsStl = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+
+    .questions-block {
         display: flex;
         flex-direction: column;
-        gap: 16px;
-
-        .required {
-            color: ${({ theme }) => theme.colors.red};
-        }
+        gap: 32px;
 
         > div {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
 
+            .radio-group {
+                display: flex;
+                gap: 24px;
+
+                > label {
+                    font-size: 12px;
+                }
+            }
+            
             > input {
                 border: 2px solid ${({ theme }) => theme.colors.muted};
                 border-radius: 6px;
@@ -26,23 +35,10 @@ export const ChildInfoFormStl = styled.div`
                     border-color: ${({ theme }) => theme.colors.violet};
                 }
             }
-
-            > input[type="date"] {
-                width: 115px;
-            }
         }
+    }
 
-        .radio-group {
-            display: flex;
-            gap: 24px;
-
-            > input {
-                height: 18px;
-                width: 18px;
-            }
-            > label {
-                height: 18px;
-            }
-        }
+    .required {
+        color: ${({ theme }) => theme.colors.red};
     }
 `;

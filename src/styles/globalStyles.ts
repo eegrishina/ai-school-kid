@@ -19,18 +19,20 @@ export const GlobalStyles = createGlobalStyle`
     font-family: 'CirceRounded', sans-serif;  
     box-sizing: border-box;
     outline: none;
-    overflow: hidden;
     margin: 0;
   }
 
   body {
     margin: 120px 0;
     padding: 0;
-    background-color: #E1F8E9
+    background-color: #E1F8E9;
+    color: ${({ theme }) => theme.colors.default};
   }
 
   h2 {
     font-size: 20px;
+    margin-bottom: 24px;
+    color: #000000;
   }
 
   a {

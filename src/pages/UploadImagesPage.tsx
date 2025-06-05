@@ -52,7 +52,7 @@ export default function UploadImagesPage() {
         <UploadImagesPageStl>
             <div className="progress">
                 {[1, 2, 3].map((i) => (
-                    <div key={i} className={step === i ? 'filled' : ''}></div>
+                    <div key={i} className={step >= i ? 'filled' : ''}></div>
                 ))}
             </div>
             <div className="content">
