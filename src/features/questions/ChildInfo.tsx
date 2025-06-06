@@ -5,6 +5,7 @@ import { ChildInfoFormStl } from "./ChildInfo.styled";
 import { updateChildInfo } from "./questionsSlice";
 import rawChildInfoFields from '../../data/childInfo.json';
 import { useState } from "react";
+import StyledDatePicker from "../../components/DatePicker";
 
 const childInfoFields: ChildInfoDetails[] = rawChildInfoFields as ChildInfoDetails[]
 
@@ -60,13 +61,20 @@ export default function ChildInfoForm() {
                                 ))}
                             </div>
                         ) : (
-                            <input
-                                type={type}
-                                value={childInfo[key] || ''}
-                                onChange={e => handleChange(key, e.target.value)}
-                                onBlur={e => hadleBlur(key, e.target.value)}
-                                required
-                            />
+                            key === 'childDOB' ? (
+                                <StyledDatePicker
+                                    selected={childInfo[key] ? new Date(childInfo[key]) : null}
+                                    onChange={(date) => handleChange(key, date ? date.toISOString().split('T')[0] : '')}
+                                />
+                            ) : (
+                                <input
+                                    type={type}
+                                    value={childInfo[key] || ''}
+                                    onChange={e => handleChange(key, e.target.value)}
+                                    onBlur={e => hadleBlur(key, e.target.value)}
+                                    required
+                                />
+                            )
                         )}
                         {type === 'date' && error && (
                             <div className="error">
