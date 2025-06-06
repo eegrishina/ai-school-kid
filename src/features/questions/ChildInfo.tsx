@@ -25,6 +25,9 @@ export default function ChildInfoForm() {
             if (year < 1900 || year > currentYear) {
                 setError('Введите корректный год рождения');
                 return;
+            } else {
+                setError(null);
+                return;
             }
         }
     };
