@@ -8,6 +8,7 @@ import Wrapper from "../components/Wrapper";
 import Progress from "../components/Progress";
 import { handleFetchError } from "../app/handleFetchError";
 import ErrorModal from "../components/ErrorModal";
+import uploadIcon from "../assets/upload-w.svg";
 
 export default function ResultPage() {
     const navigate = useNavigate();
@@ -113,6 +114,7 @@ export default function ResultPage() {
                                 </a>
                                 <a href={pdfUrl || ''} download>
                                     Скачать отчет PDF
+                                    <img src={uploadIcon} alt="" />
                                 </a>
                             </div>
                         )}
@@ -171,9 +173,18 @@ const ResultPageStl = styled.div`
             text-align: center;
             transition: all 0.3s ease-in;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
 
             &:hover {
                 background-color: ${({ theme }) => theme.colors.blue110};
+            }
+
+            img {
+                height: 20px;
+                width: 20px;
             }
         }
     }
