@@ -10,6 +10,8 @@ import AllQuestions from "../features/questions/AllQuestions";
 import EmotionalStateSelector from "../features/questions/EmotionalState";
 import Wrapper from "../components/Wrapper";
 import Progress from "../components/Progress";
+import { handleFetchError } from "../app/handleFetchError";
+import ErrorModal from "../components/ErrorModal";
 
 export default function QuestionsPage() {
     const navigate = useNavigate();
@@ -42,16 +44,17 @@ export default function QuestionsPage() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                const message = errorData?.detail?.[0]?.msg || 'Произошла ошибка при отправке формы.';
-                setError(message);
-                return;
+                const errorMessage = handleFetchError(response.status);
+                setError(errorMessage);
+                return false;
             }
 
             navigate('/result');
+            return true;
         } catch (error) {
             console.error('Upload images failed', error);
             setError('Произошла ошибка при отправке формы.');
+            return false;
         }
     };
 
@@ -92,6 +95,7 @@ export default function QuestionsPage() {
                     </div>
                 </div>
             </QuestionsPageStl>
+            {error && <ErrorModal message={error} onClose={() => setError(null)} />}
         </Wrapper>
     )
 }

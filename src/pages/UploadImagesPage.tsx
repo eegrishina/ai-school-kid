@@ -8,6 +8,8 @@ import { setTaskId } from "../features/images/imagesSlice";
 import { useState } from "react";
 import Wrapper from "../components/Wrapper";
 import Progress from "../components/Progress";
+import { handleFetchError } from "../app/handleFetchError";
+import ErrorModal from "../components/ErrorModal";
 
 export default function UploadImagesPage() {
     const dispatch = useAppDispatch();
@@ -35,18 +37,19 @@ export default function UploadImagesPage() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                const message = errorData?.detail?.[0]?.msg || 'Произошла ошибка при загрузке файлов.';
-                setError(message);
-                return;
+                const errorMessage = handleFetchError(response.status);
+                setError(errorMessage);
+                return false;
             }
 
             const data = await response.json();
             dispatch(setTaskId(data.task_id));
             navigate('/questions');
+            return true;
         } catch (error) {
             console.error('Upload images failed', error);
             setError('Произошла ошибка при загрузке файлов.');
+            return false;
         }
     };
 
@@ -60,23 +63,19 @@ export default function UploadImagesPage() {
                         <img src={warningIcon} alt="icon" />
                         <p>Допустимые форматы файлов: jpg, jpeg, png. Размер не более 5 Мб</p>
                     </div>
-                    {error && (
-                        <div className="error-message">
-                            {error}
-                        </div>
-                    )}
                     <UploadImages onFilesChange={setFiles} />
                     <div className="bottom-part">
                         <p>Шаг {step}/3</p>
                         <Button
                             text='Далее >>'
-                            link='/questions'
+                            link={error ? '' : '/questions'}
                             disabled={files.includes(null)}
                             onClick={handleSubmit}
                         />
                     </div>
                 </div>
             </UploadImagesPageStl>
+            {error && <ErrorModal message={error} onClose={() => setError(null)} />}
         </Wrapper>
     )
 }

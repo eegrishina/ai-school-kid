@@ -6,18 +6,21 @@ import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
 import Wrapper from "../components/Wrapper";
 import Progress from "../components/Progress";
+import { handleFetchError } from "../app/handleFetchError";
+import ErrorModal from "../components/ErrorModal";
 
 export default function ResultPage() {
     const navigate = useNavigate();
     const [status, setStatus] = useState<'в обработке' | 'готово' | 'ошибка' | 'отправка'>('отправка');
     const [pdfUrl, setPdfUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [modalError, setModalError] = useState<string | null>(null);
     const taskId = useAppSelector((state) => state.photos.taskId);
     const step = 3;
 
     useEffect(() => {
         if (!taskId) {
-            navigate('/');
+            setModalError('Отчет недоступен. Возможно, данные устарели или были удалены. Попробуйте пройти тест заново.')
             return;
         }
 
@@ -27,7 +30,17 @@ export default function ResultPage() {
         const checkStatus = async () => {
             try {
                 const response = await fetch(`https://sirius-draw-test-94500a1b4a2f.herokuapp.com/report/${taskId}`);
-                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
+
+                if (!response.ok) {
+                    const errorMessage = handleFetchError(response.status);
+                    if (response.status >= 500 || response.status === 0) {
+                        setModalError(errorMessage);
+                    } else {
+                        setError(errorMessage);
+                        setStatus('ошибка');
+                    }
+                    return;
+                }
 
                 const data: ReportStatusResponse = await response.json();
 
@@ -42,10 +55,16 @@ export default function ResultPage() {
                 }
             } catch (error: unknown) {
                 setStatus('ошибка');
-                if (error instanceof Error) {
-                    setError(error.message);
+                const message = error instanceof Error ? error.message : 'Ошибка при запросе статуса отчета';
+                if (
+                    message.includes('NetworkError') ||
+                    message.includes('Failed to fetch') ||
+                    message.includes('timeout') ||
+                    message.includes('fetch')
+                ) {
+                    setModalError('Нет соединения с сервером. Попробуйте позже.');
                 } else {
-                    setError('Ошибка при запросе статуса отчета');
+                    setError(message);
                 }
             }
         };
@@ -54,7 +73,7 @@ export default function ResultPage() {
         const intervalId = setInterval(checkStatus, 12000);
 
         return () => clearInterval(intervalId);
-    }, [taskId]);
+    }, [taskId, navigate]);
 
     return (
         <Wrapper>
@@ -66,7 +85,7 @@ export default function ResultPage() {
                     <div>
                         {status === 'отправка' && (
                             <div className="loading">
-                                Отправка данных формы...
+                                Объединяем данные, чтобы составить психологический отчет
                                 <Spinner />
                             </div>
                         )}
@@ -100,6 +119,10 @@ export default function ResultPage() {
                     </div>
                 </div>
             </ResultPageStl>
+            {modalError && <ErrorModal message={modalError} onClose={() => {
+                setModalError(null);
+                navigate('/');
+            }} />}
         </Wrapper>
     )
 }
@@ -112,7 +135,7 @@ const ResultPageStl = styled.div`
         
         .loading {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             color: ${({ theme }) => theme.colors.violet};
         }
         .done {
