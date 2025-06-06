@@ -1,8 +1,19 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import WelcomePage from "./pages/WelcomePage";
+import UploadImagesPage from "./pages/UploadImagesPage";
+import QuestionsPage from "./pages/QuestionsPage";
+import ResultPage from "./pages/ResultPage";
+
 function App() {
   return (
-    <div>
-      <h1>AI SchoolKid</h1>
-    </div>
+    <BrowserRouter basename="/ai-school-kid">
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/upload" element={<UploadImagesPage />} />
+        <Route path="/questions" element={<QuestionsPage />} />
+        <Route path="/result" element={<ResultPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

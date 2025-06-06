@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Имя ребенка",
+    "type": "text",
+    "key": "childName"
+  },
+  {
+    "label": "Дата рождения ребенка",
+    "type": "date",
+    "key": "childDOB"
+  },
+  {
+    "label": "Пол ребенка",
+    "type": "radio",
+    "key": "childGender",
+    "options": [
+      "Мужской",
+      "Женский"
+    ]
+  },
+  {
+    "label": "Имя родителя, заполняющего анкету",
+    "type": "text",
+    "key": "parentName"
+  }
+]
