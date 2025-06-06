@@ -1,15 +1,18 @@
 import styled from 'styled-components';
 
-export const UploadContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 64px;
-    height: auto;
+export const UploadImagesStl = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: nowrap;
 
     .field {
         display: flex;
+        flex: 1 1 0;
+        max-width: 216px;
+        min-width: 0;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         gap: 8px;
 
@@ -21,7 +24,7 @@ export const UploadContainer = styled.div`
 
     .custom-input {
         position: relative;
-        min-height: 161px;
+        height: 161px;
         width: 100%;
         background-color: ${({ theme }) => theme.colors.surface3};
         border-radius: 8px;
@@ -81,6 +84,33 @@ export const UploadContainer = styled.div`
             left: 0;
             z-index: 1;
             pointer-events: none;
+        }
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        gap: 24px;
+
+        .custom-input {
+            height: 64px;
+
+            .custom-btn {
+                width: 32px;
+                height: 32px;
+    
+                img {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        flex-direction: column;
+        gap: 16px;
+
+        .field {
+            max-width: 100%;
         }
     }
 `;

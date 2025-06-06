@@ -20,11 +20,12 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     outline: none;
     margin: 0;
+    padding: 0;
   }
 
   body {
     margin: 120px 0;
-    padding: 0;
+    padding: 0 24px;
     background-color: #E1F8E9;
     color: ${({ theme }) => theme.colors.default};
   }
@@ -38,5 +39,11 @@ export const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
     color: inherit;
+  }
+
+  @media ${({ theme }) => theme.device.mobile} {
+    body {
+      margin: 40px 0;
+    }
   }
 `;

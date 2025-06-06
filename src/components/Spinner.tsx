@@ -8,8 +8,8 @@ const spin = keyframes`
 
 const SpinnerStl = styled.div`
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
     border: 3px solid rgba(0, 0, 0, 0.1);
     border-top-color: ${({ theme }) => theme.colors.violet};
     border-radius: 50%;

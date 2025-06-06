@@ -19,24 +19,58 @@ export const AllQuestionsStl = styled.div`
                 display: flex;
                 gap: 24px;
 
-                > label {
+                .custom-radio {
+                    position: relative;
+                    padding-left: 20px;
                     font-size: 12px;
                     cursor: pointer;
-                    
-                    > input {
+
+                    input {
+                        position: absolute;
+                        opacity: 0;
                         cursor: pointer;
+                    }
+
+                    .radio-mark {
+                        position: absolute;
+                        left: 0;
+                        top: 42%;
+                        transform: translateY(-50%);
+                        height: 16px;
+                        width: 16px;
+                        border: 5px solid ${({ theme }) => theme.colors.muted};
+                        border-radius: 50%;
+                        background-color: ${({ theme }) => theme.colors.muted};
+                        &:hover {
+                            border-color: ${({ theme }) => theme.colors.blue100};
+                            background-color: ${({ theme }) => theme.colors.blue100};
+                        }
+                    }
+
+                    input:checked + .radio-mark {
+                        border-color: ${({ theme }) => theme.colors.blue100};
+                        background-color: ${({ theme }) => theme.colors.surface};
+                    }
+
+                    input:checked:hover + .radio-mark {
+                        border-color: ${({ theme }) => theme.colors.blue110};
+                        background-color: ${({ theme }) => theme.colors.surface};
                     }
                 }
             }
-            
-            > input {
-                border: 2px solid ${({ theme }) => theme.colors.muted};
-                border-radius: 6px;
-                height: 40px;
-                width: 100%;
-                padding: 10px 12px;
 
-                &:hover, &:active, &:focus, &:valid {
+            > textarea {
+                border: 1px solid ${({ theme }) => theme.colors.muted};
+                border-radius: 6px;
+                padding: 10px 12px;
+                font-size: 14px;
+                resize: none;
+                overflow: hidden;
+                min-height: 40px;
+
+                &:hover,
+                &:active,
+                &:focus {
                     border-color: ${({ theme }) => theme.colors.violet};
                 }
             }
@@ -45,5 +79,28 @@ export const AllQuestionsStl = styled.div`
 
     .required {
         color: ${({ theme }) => theme.colors.red};
+    }
+
+    @media ${({ theme }) => theme.device.tablet} {
+        gap: 48px;
+
+        .questions-block {
+            > div {
+                .radio-group {
+                    gap: 14px;
+                }
+            }
+        }
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        .questions-block {
+            > div {
+                .radio-group {
+                    flex-direction: column;
+                    gap: 8px;
+                }
+            }
+        }
     }
 `;

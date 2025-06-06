@@ -6,7 +6,7 @@ interface ButtonProps {
     link: string;
     disabled?: boolean;
     isBack?: boolean;
-    onClick?: () => void | Promise<void>;
+    onClick?: () => boolean | void | Promise<boolean | void>;
 }
 
 export default function Button({ text, link, disabled = false, isBack = false, onClick }: ButtonProps) {
@@ -14,7 +14,10 @@ export default function Button({ text, link, disabled = false, isBack = false, o
 
     const handleClick = async () => {
         if (disabled) return;
-        if (onClick) await onClick();
+        if (onClick) {
+            const result = await onClick();
+            if (!result) return;
+        }
         navigate(link);
     };
 
@@ -46,5 +49,9 @@ const ButtonStl = styled.button<{ isBack: boolean }>`
         background-color: ${({ theme }) => theme.colors.disabledbtn};
         color: ${({ theme }) => theme.colors.disabled};
         cursor: default;
+    }
+
+    @media ${({ theme }) => theme.device.mobile} {
+        font-size: 14px;
     }
 `;
